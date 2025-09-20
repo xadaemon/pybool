@@ -13,7 +13,8 @@ class Logic(Enum):
     false = 0
     true = 1
     x = 2
-    z = 3
+    hz = 3
+    lz = 4
 
     @staticmethod
     def from_bool(v: bool) -> "Logic":
@@ -28,11 +29,13 @@ class Logic(Enum):
                 return "1"
             case Logic.x:
                 return "x"
-            case Logic.z:
-                return "z"
+            case Logic.hz:
+                return "high_z"
+            case Logic.lz:
+                return "low_z"
 
     def _is_logic_val(self) -> bool:
-        return not self in [Logic.x, Logic.z]
+        return not self in [Logic.x, Logic.hz, Logic.lz]
 
     @override
     def __eq__(self, other: object) -> bool:
@@ -91,7 +94,8 @@ class Logic(Enum):
 Ltrue = Logic.true
 Lfalse = Logic.false
 Lx = Logic.x
-Lz = Logic.z
+Lhz = Logic.hz
+Llz = Logic.lz
 
 
 class LogicVector:
