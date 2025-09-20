@@ -7,6 +7,7 @@ BinOp = Enum(
     [("AND", 0), ("OR", 1), ("XOR", 2), ("NAND", 3), ("NOR", 4)],
 )
 
+
 # Valid logic values
 class Logic(Enum):
     false = 0
@@ -17,7 +18,7 @@ class Logic(Enum):
     @staticmethod
     def from_bool(v: bool) -> "Logic":
         return Logic.true if v else Logic.false
-    
+
     @override
     def __repr__(self) -> str:
         match self:
@@ -66,13 +67,26 @@ class Logic(Enum):
     def negate(self):
         return Logic(Logic.false if self == Logic.true else Logic.true)
 
+    def __or__(self, value: "Logic") -> "Logic":
+        return self.bin_op(value, BinOp.OR)
+
+    def __and__(self, value: "Logic") -> "Logic":
+        return self.bin_op(value, BinOp.AND)
+
+    def __xor__(self, value: "Logic") -> "Logic":
+        return self.bin_op(value, BinOp.XOR)
+
+    def __invert__(self) -> "Logic":
+        return self.negate()
+
     @override
     def __str__(self) -> str:
         return self.__repr__()
-    
+
     @staticmethod
     def n_of_val(n: int, val: "Logic") -> list["Logic"]:
         return [val for _ in range(n)]
+
 
 Ltrue = Logic.true
 Lfalse = Logic.false
@@ -98,7 +112,7 @@ class LogicVector:
     def __getitem__(self, item: int) -> Logic:
         return self._vals[item]
 
-    def __setitem__(self, item: int, val: Logic ) -> None:
+    def __setitem__(self, item: int, val: Logic) -> None:
         self._vals[item] = val
 
     def bin_op(self, other: "LogicVector", op: BinOp) -> "LogicVector":
